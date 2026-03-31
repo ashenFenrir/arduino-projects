@@ -218,6 +218,7 @@ void break_mode(){
     this_break_time = default_break_time;
     start_time = millis();
     mod = WORK;
+    prev_mode = BREAK;
     return;
   }
   
@@ -225,13 +226,6 @@ void break_mode(){
     mod = PAUSE;
     prev_mode = BREAK;
     this_break_time = ramaining_break_time;
-    return;
-  }
-  else if(button_state[0] == 3){
-    ramaining_break_time = default_break_time;
-    this_break_time = default_break_time;
-    start_time = millis();
-    mod = WORK;
     return;
   }
   else if(button_state[1] == 2){
@@ -243,8 +237,16 @@ void break_mode(){
     this_break_time = default_break_time;
     start_time = millis();
   }
-
-  if((millis()-start_time)<100){
+  else if(button_state[0] == 3){
+    ramaining_break_time = default_break_time;
+    this_break_time = default_break_time;
+    start_time = millis();
+    mod = WORK;
+    prev_mode = WORK;
+    return;
+  }
+  
+  if((millis()-start_time)<200 && prev_mode == WORK){
     tone(buzzer, 2000);
   }
   else
@@ -262,6 +264,7 @@ void work_mode(){
     this_work_time = default_work_time;
     start_time = millis();
     mod = BREAK;
+    prev_mode = WORK;
     return;
   }
   
@@ -276,6 +279,7 @@ void work_mode(){
     this_work_time = default_work_time;
     start_time = millis();
     mod = BREAK;
+    prev_mode = BREAK;
     return;
   }
   else if(button_state[1] == 2){
@@ -287,6 +291,12 @@ void work_mode(){
     this_work_time = default_work_time;
     start_time = millis();
   }
+
+  if((millis()-start_time)<100 && prev_mode == BREAK){
+    tone(buzzer, 2000);
+  }
+  else
+    tone(buzzer, 0);
   
   ramaining_work_time = this_work_time-(millis()-start_time)/1000;
   
