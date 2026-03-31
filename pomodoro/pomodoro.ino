@@ -208,7 +208,7 @@ void edit_mode(){
     show_time(analogRead(potentiometer)*60/4095, default_break_time, millis()%1500>750?13:11);
   }
   else if(prev_mode == BREAK){
-    show_time(default_work_time, analogRead(potentiometer)*60/4095, millis()%1500<750?13:11);
+    show_time(default_work_time, analogRead(potentiometer)*60/4095, millis()%1500<750?13:10);
   }
 }
 
